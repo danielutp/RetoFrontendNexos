@@ -1,0 +1,24 @@
+<div class="container">
+  <table class="table">
+    <thead>
+      <tr>
+        <th scope="col">ID</th>
+        <th scope="col">Nombre</th>
+        <th scope="col">Cantidad</th>
+        <th scope="col">Fecha Ingreso</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let merca of mercancia">
+        <th scope="row">{{merca.id}}</th>
+        <td>{{merca.nombre}}</td>
+        <td>{{merca.cantidad}}</td>
+        <td>{{merca.fechaIngreso |date}}</td>
+        <td class=""><a routerLink="editarmercancia/{{merca.id}}" class="btn btn-primary">Editar</a></td>
+      </tr>
+    </tbody>
+  </table>
+  <a routerLink="guardarMercancia" class="btn btn-success">
+    Nuevo Mercancia
+  </a>
+</div>
