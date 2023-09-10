@@ -4,8 +4,11 @@ import { MercanciaComponent } from './components/mercancia/mercancia.component';
 import { CrearmercanciaComponent } from './components/crearmercancia/crearmercancia.component';
 
 const routes: Routes = [
-  { path: 'crearmercancia', component: CrearmercanciaComponent },
+  { path: '', component: MercanciaComponent },
+  { path: 'editarMercancia/:id', component: CrearmercanciaComponent },
+  { path: 'guardarMercancia', component: CrearmercanciaComponent },
   { path: 'mercancia', component: MercanciaComponent },
+  { path: '*', redirectTo: '' },
 ];
 @NgModule({
   imports: [RouterModule.forRoot(routes)],

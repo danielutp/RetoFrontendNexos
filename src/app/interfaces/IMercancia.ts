@@ -3,7 +3,6 @@ export interface IMercancia {
   nombre: string;
   cantidad: number;
   fechaIngreso: Date;
-  fechaActualizacion: string;
   persona: {
     id: number;
   };

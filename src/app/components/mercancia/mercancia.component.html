@@ -6,6 +6,8 @@
         <th scope="col">Nombre</th>
         <th scope="col">Cantidad</th>
         <th scope="col">Fecha Ingreso</th>
+        <th scope="col">Accion </th>
+        <th scope="col">Accion </th>
       </tr>
     </thead>
     <tbody>
@@ -14,7 +16,8 @@
         <td>{{merca.nombre}}</td>
         <td>{{merca.cantidad}}</td>
         <td>{{merca.fechaIngreso |date}}</td>
-        <td class=""><a routerLink="editarmercancia/{{merca.id}}" class="btn btn-primary">Editar</a></td>
+        <td class=""><a (click)="editarMercancia(merca)" class="btn btn-primary">Editar</a></td>
+        <td class=""><a (click)="eliminarMercancia(merca)" class="btn btn-danger">Eliminar</a></td>
       </tr>
     </tbody>
   </table>
