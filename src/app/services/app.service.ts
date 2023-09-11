@@ -18,12 +18,12 @@ export class AppService {
     return this.http.get<IResponse>(`${environment.api}mercancias`);
   }
 
-  deletePersona(id: number,idUser: number) {
+  deletePersona(id: number, idUser: number):Observable<IResponse> {
     return this.http.delete<IResponse>(`${environment.api}mercancia/${id}/${idUser}`);
   }
 
-  postmercancia(mercancia: IMercancia): Observable<IMercancia> {
-    return this.http.post<IMercancia>(
+  postmercancia(mercancia: IMercancia): Observable<IResponse> {
+    return this.http.post<IResponse>(
       `${environment.api}mercancia`,
       mercancia
     );

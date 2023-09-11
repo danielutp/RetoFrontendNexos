@@ -1,9 +1,11 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { IResponsee } from 'src/app/interfaces/IResponsee';
 import { Mercancia } from 'src/app/interfaces/Mercancia';
+import { Usuario } from 'src/app/interfaces/Usuario';
 import { AppService } from 'src/app/services/app.service';
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-crearmercancia',
@@ -14,15 +16,21 @@ export class CrearmercanciaComponent implements OnInit {
   vista: boolean;
   frmRegistro: FormGroup;
   mercancia: Mercancia;
-  tipo: Boolean;
+  usuario: Usuario[];
+  buttonTitle: string;
+  tipo: boolean;
+  valor: number = 0;
 
   constructor(
     private fb: FormBuilder,
     private router: ActivatedRoute,
+    private routerA: Router,
     private appService: AppService
   ) {
     this.vista = false;
     this.tipo = false;
+    this.usuario = [];
+    this.buttonTitle = "";
     this.mercancia = {} as Mercancia;
     this.frmRegistro = this.fb.group({
       id: ['', Validators.required],
@@ -40,6 +48,11 @@ export class CrearmercanciaComponent implements OnInit {
   }
   ngOnInit(): void {
     const { id } = this.router.snapshot.params;
+    this.buttonTitle = this.valor == 0 ? "Porfavor Seleccion un usuario" : "Editar mercancias";
+    this.appService.getusuarios().subscribe((ele) => {
+      this.usuario = ele.data;
+      console.log(ele)
+    });
     this.frmRegistro.patchValue({
       id: localStorage.getItem('id'),
     });
@@ -51,11 +64,18 @@ export class CrearmercanciaComponent implements OnInit {
         this.mercancia = ele.data;
         console.log(this.mercancia)
         this.frmRegistro.patchValue({
-          identificacion: this.mercancia.id,
-          tipoIdentificacion: this.mercancia.nombre,
-          nombres: this.mercancia.cantidad,
-          apellidos: this.mercancia.fechaIngreso,
+          id: this.mercancia.id,
+          nombre: this.mercancia.nombre,
+          cantidad: this.mercancia.cantidad,
+          fechaIngreso: this.mercancia.fechaIngreso,
         });
+      });
+    } else {
+      this.frmRegistro.patchValue({
+        id: '',
+        nombre: '',
+        cantidad: '',
+        fechaIngreso: '',
       });
     }
   }
@@ -69,49 +89,43 @@ export class CrearmercanciaComponent implements OnInit {
   }
 
   save() {
-    /* const { id } = this.router.snapshot.params;
+    const { id } = this.router.snapshot.params;
     const data = this.frmRegistro.getRawValue();
     if (id) {
-      this.appService.putActualizarMercancia(id, data).subscribe();
+      console.log(this.valor)
+      this.appService.putActualizarMercancia(id, this.valor, data).subscribe((ele) => {
+        Swal.fire(
+          'Hey usuario!',
+           ele.message,
+          'info'
+        )
+      });
       this.routerA.navigate(['/']);
       localStorage.clear();
     } else {
       console.log(data);
-      this.causanteService
-        .postpersona(data)
-        .pipe(
-          concatMap((data) => {
-            console.log('map' + data);
-            const causante: ICausante = {
-              persona: {
-                id: data.id!,
-              },
-            };
-            return this.causanteService.postcausante(causante);
-          })
-        )
-        .subscribe((ele) => console.log(ele));
-
-      this.causanteService
-        .getRenta(this.frmRegistro.get('identificacion')?.value)
-        .pipe(
-          concatMap((data) => {
-            const renta: IRenta = {
-              fechaSolicitud: new Date(),
-              salario: data.salario,
-              mesesCotizando: data.mesesCotizando,
-            };
-            return this.causanteService.postRenta(renta);
-          })
-        )
-        .subscribe();
+      const newMercancia = {
+        ...data,
+        usuario: { id: this.valor }
+      }
+      this.appService.postmercancia(newMercancia).subscribe((ele)=> {
+        Swal.fire(
+          'Hey usuario!',
+           ele.message,
+          'info'
+        )});
       localStorage.clear();
-      this.routerBeneficiario.navigate(['/beneficiario/agregar']);
-    } */
+      this.routerA.navigate(['/']);
+    }
   }
 
   cambio(data: boolean) {
     this.vista = data;
+  }
+
+  onInputChange(event: any) {
+    console.log(event.target.value)
+    this.valor = event.target.value;
   }
 
 }
