@@ -1,26 +1,35 @@
 <div class="container">
-  <table class="table">
-    <thead>
-      <tr>
-        <th scope="col">ID</th>
-        <th scope="col">Nombre</th>
-        <th scope="col">Cantidad</th>
-        <th scope="col">Fecha Ingreso</th>
-        <th scope="col">Accion </th>
-        <th scope="col">Accion </th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr *ngFor="let merca of mercancia">
-        <th scope="row">{{merca.id}}</th>
-        <td>{{merca.nombre}}</td>
-        <td>{{merca.cantidad}}</td>
-        <td>{{merca.fechaIngreso |date}}</td>
-        <td class=""><a (click)="editarMercancia(merca)" class="btn btn-primary">Editar</a></td>
-        <td class=""><a (click)="eliminarMercancia(merca)" class="btn btn-danger">Eliminar</a></td>
-      </tr>
-    </tbody>
-  </table>
+  <input type="text" class="w-25" placeholder="Buscar por nombre" (change)="filter($event)">
+  <div class="d-flex">
+    <table class="table">
+      <thead>
+        <tr>
+          <th scope="col">ID</th>
+          <th scope="col">Nombre</th>
+          <th scope="col">Cantidad</th>
+          <th scope="col">Fecha Ingreso</th>
+          <th scope="col">Accion </th>
+          <th scope="col">Accion </th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let merca of filtro.length > 0 ? filtro: mercancia">
+          <th scope="row">{{merca.id}}</th>
+          <td>{{merca.nombre}}</td>
+          <td>{{merca.cantidad}}</td>
+          <td>{{merca.fechaIngreso |date}}</td>
+          <td class=""><a (click)="editarMercancia(merca)" class="btn btn-primary">Editar</a></td>
+          <td class=""><a (click)="eliminarMercancia(merca,valor)" class="btn btn-danger">Eliminar</a></td>
+        </tr>
+      </tbody>
+    </table>
+    <div>
+      <h5>Ingrese tu nombre de usuario</h5>
+      <select name="usuario" id="" class="selector" (change)="onInputChange($event)">
+        <option *ngFor="let user of usuario" value="{{user.id}}">{{user.nombre}}</option>
+      </select>
+    </div>
+  </div>
   <a routerLink="guardarMercancia" class="btn btn-success">
     Nuevo Mercancia
   </a>

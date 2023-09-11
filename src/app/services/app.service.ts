@@ -5,6 +5,7 @@ import { environment } from 'src/environments/environments';
 import { IResponse } from '../interfaces/IResponse';
 import { IMercancia } from '../interfaces/IMercancia';
 import { IResponsee } from '../interfaces/IResponsee';
+import { IResponseU } from '../interfaces/IResponseU';
 
 @Injectable({
   providedIn: 'root'
@@ -17,8 +18,8 @@ export class AppService {
     return this.http.get<IResponse>(`${environment.api}mercancias`);
   }
 
-  deletePersona(id: number) {
-    return this.http.delete<IResponse>(`${environment.api}mercancia/${id}`);
+  deletePersona(id: number,idUser: number) {
+    return this.http.delete<IResponse>(`${environment.api}mercancia/${id}/${idUser}`);
   }
 
   postmercancia(mercancia: IMercancia): Observable<IMercancia> {
@@ -31,11 +32,15 @@ export class AppService {
     return this.http.get<IResponsee>(`${environment.api}mercancia/${id}`);
   }
 
-   putActualizarMercancia(id: number,idUser: number, mercancia: IMercancia): Observable<IResponse> {
+  putActualizarMercancia(id: number, idUser: number, mercancia: IMercancia): Observable<IResponse> {
     return this.http.put<IResponse>(
       `${environment.api}mercancia/${id}/${idUser}`,
       mercancia
     );
+  }
+
+  getusuarios(): Observable<IResponseU> {
+    return this.http.get<IResponseU>(`${environment.api}user/usuarios`);
   }
 
 }
